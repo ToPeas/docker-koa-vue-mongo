@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    image: peiqixin/backend:latest
+    ports:
+      - 1992:1992
+    links:
+      - mongo
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_NAME=demo
+  frontend:
+    build: ./frontend
+    image: peiqixin/frontend:latest
+    links:
+      - backend  
+    ports:
+      - "80:80"
+      - "443:443"
+  mongo:
+    image: mongo:3.4.9
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/data/log
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo:/data/db
+
